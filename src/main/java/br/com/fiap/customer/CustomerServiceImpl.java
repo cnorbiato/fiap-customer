@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.stream.Stream;
 
@@ -19,7 +20,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public CustomerResponse findById(Integer id) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new HttpClientErrorException(NOT_FOUND, "Customer Not Found"));
+                .orElseThrow(() -> new HttpServerErrorException(NOT_FOUND, "Customer Not Found"));
 
         CustomerResponse customerResponse = new CustomerResponse();
         customerResponse.setName(customer.getName());
@@ -54,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService{
         Stream.of("MALE", "FEMALE")
                 .filter(s -> s.equals(gender.toUpperCase()))
                 .findFirst()
-                .orElseThrow(() -> new HttpClientErrorException(UNPROCESSABLE_ENTITY, "Gender Is Invalid"));
+                .orElseThrow(() -> new HttpServerErrorException(UNPROCESSABLE_ENTITY, "Gender Is Invalid"));
 
 
     }

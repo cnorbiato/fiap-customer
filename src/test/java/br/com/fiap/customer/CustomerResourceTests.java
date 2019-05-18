@@ -21,7 +21,7 @@ public class CustomerResourceTests {
     private CustomerRepository customerRepository;
 
     @LocalServerPort
-    private int port;
+    private Integer port;
 
     @Before
     public void setup(){
@@ -37,7 +37,7 @@ public class CustomerResourceTests {
         Customer customer = new Customer();
         customer.setName("Danilo");
         customer.setLastName("Vitoriano");
-        customer.setGender("male");
+        customer.setGender("Male");
         customer.setAge(38);
 
         customerRepository.save(customer);
@@ -51,15 +51,15 @@ public class CustomerResourceTests {
                 .assertThat()
                 .statusCode(200)
                 .body("name", Matchers.is("Danilo"))
-                .body("lastname", Matchers.is("Vitoriano"))
-                .body("gender", Matchers.is("male"))
+                .body("lastName", Matchers.is("Vitoriano"))
+                .body("gender", Matchers.is("Male"))
                 .body("age", Matchers.is(38));
 
     }
 
     @Test
     public void cannotFindCustomerById(){
-        RestAssured.get("/customer/1")
+        RestAssured.get("/customer/300")
                 .then()
                 .assertThat()
                 .statusCode(404)
@@ -76,7 +76,7 @@ public class CustomerResourceTests {
 
         RestAssured.given()
                 .body(customerRequest)
-                .post("/customers")
+                .post("/customer")
                 .then()
                 .assertThat()
                 .statusCode(201)
@@ -88,12 +88,12 @@ public class CustomerResourceTests {
         CustomerRequest customerRequest = new CustomerRequest();
         customerRequest.setName("Danilo");
         customerRequest.setLastName("Vitoriano");
-        customerRequest.setGender("animal");
+        customerRequest.setGender("Animal");
         customerRequest.setAge(38);
 
         RestAssured.given()
                 .body(customerRequest)
-                .post("/customers")
+                .post("/customer")
                 .then()
                 .assertThat()
                 .statusCode(422)
